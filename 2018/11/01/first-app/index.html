@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>原生开发Android环境搭建 first-app | Wenbooo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、熟悉一门开发语言：Java or Kotlinjava的介绍就不说了，从1995年发布到今天，历经20多年，久经不衰。现在广泛用于开发后端和Android，其他的特性就比较少人用。 Kotlin则是由IDEA公司推出的一门基于JVM的语言，一直默默无闻，但在2017年的Google I/O上被推荐为Android app的官方推荐语言之后，就火了起来。 现在越来越多的公司都在启用kotlin，">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原生开发Android环境搭建 first-app">
+<meta property="og:url" content="https://wenbolee.github.io/2018/11/01/first-app/index.html">
+<meta property="og:site_name" content="Wenbooo">
+<meta property="og:description" content="一、熟悉一门开发语言：Java or Kotlinjava的介绍就不说了，从1995年发布到今天，历经20多年，久经不衰。现在广泛用于开发后端和Android，其他的特性就比较少人用。 Kotlin则是由IDEA公司推出的一门基于JVM的语言，一直默默无闻，但在2017年的Google I/O上被推荐为Android app的官方推荐语言之后，就火了起来。 现在越来越多的公司都在启用kotlin，">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2018-10-31T16:52:09.450Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="原生开发Android环境搭建 first-app">
+<meta name="twitter:description" content="一、熟悉一门开发语言：Java or Kotlinjava的介绍就不说了，从1995年发布到今天，历经20多年，久经不衰。现在广泛用于开发后端和Android，其他的特性就比较少人用。 Kotlin则是由IDEA公司推出的一门基于JVM的语言，一直默默无闻，但在2017年的Google I/O上被推荐为Android app的官方推荐语言之后，就火了起来。 现在越来越多的公司都在启用kotlin，">
+  
+    <link rel="alternate" href="/atom.xml" title="Wenbooo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Wenbooo</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">不积跬步，无以至千里；不积小流，无以成江海。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wenbolee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="android-first-app" class="article article-type-android" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/01/first-app/" class="article-date">
+  <time datetime="2018-10-31T17:00:00.000Z" itemprop="datePublished">2018-11-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      原生开发Android环境搭建 first-app
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、熟悉一门开发语言：Java-or-Kotlin"><a href="#一、熟悉一门开发语言：Java-or-Kotlin" class="headerlink" title="一、熟悉一门开发语言：Java or Kotlin"></a>一、熟悉一门开发语言：Java or Kotlin</h3><p>java的介绍就不说了，从1995年发布到今天，历经20多年，久经不衰。现在广泛用于开发后端和Android，其他的特性就比较少人用。</p>
+<p>Kotlin则是由IDEA公司推出的一门基于JVM的语言，一直默默无闻，但在2017年的Google I/O上被推荐为Android app的官方推荐语言之后，就火了起来。</p>
+<p>现在越来越多的公司都在启用kotlin，或者用其重写java的代码。</p>
+<p>这里推荐几个学习java和kotlin的网站和系列文章</p>
+<ul>
+<li><a href="http://www.runoob.com/java/java-tutorial.html" target="_blank" rel="noopener">java-国内-菜鸟教程</a>  </li>
+<li><a href="http://www.runoob.com/kotlin/kotlin-tutorial.html" target="_blank" rel="noopener">kotilin-国内-菜鸟教程</a>  </li>
+<li><a href="https://segmentfault.com/a/1190000009307554" target="_blank" rel="noopener">kotlin-掘金-教程收藏集</a>  </li>
+</ul>
+<h3 id="二、开发环境配置"><a href="#二、开发环境配置" class="headerlink" title="二、开发环境配置"></a>二、开发环境配置</h3><ol>
+<li>硬件配置：（强烈推荐）8g内存 + i5/7 + 120g固态，最低配置4g内存</li>
+<li>java环境，推荐jdk1.8以上，具体教程不复制了<a href="https://blog.csdn.net/afuturezww/article/details/73124175" target="_blank" rel="noopener">这里给链接</a></li>
+<li>记录一下环境变量<br>在“系统变量”下 -&gt; 新建“java_home” -&gt; 值为安装的java的根目录<br>在“系统变量”下 -&gt; 新建“classpath” -&gt; 值为”.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar”<br>在“系统变量”下 -&gt; 编辑”path”变量 -&gt; 增加”%JAVA_HOME%\bin;”  </li>
+</ol>
+<h3 id="三、下载-amp-安装-Android-studio"><a href="#三、下载-amp-安装-Android-studio" class="headerlink" title="三、下载 &amp; 安装 Android studio"></a>三、下载 &amp; 安装 Android studio</h3><ol>
+<li>下载链接是<a href="http://www.android-studio.org" target="_blank" rel="noopener">www.android-studio.org</a></li>
+<li>安装的话，一路next，注意Studio和SDK的安装目录，最好在C盘根目录，例如C:\android\studio，C:\android\sdk，C:\android\projects。</li>
+<li>打开studio，新建一个项目</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wenbolee.github.io/2018/11/01/first-app/" data-id="cjnxeklrv0000rcuvgyv968b8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/11/01/markdown-grammar/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">markdown-grammar</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/android/" style="font-size: 10px;">android</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/01/first-app/">原生开发Android环境搭建 first-app</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/01/markdown-grammar/">markdown-grammar</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/10/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 wenbo<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
