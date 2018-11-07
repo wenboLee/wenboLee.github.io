@@ -69,6 +69,113 @@
       <div class="outer">
         <section id="main">
   
+    <article id="android-Android中的蓝牙开发" class="article article-type-android" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/08/Android中的蓝牙开发/" class="article-date">
+  <time datetime="2018-11-07T17:56:17.000Z" itemprop="datePublished">2018-11-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/08/Android中的蓝牙开发/">Android中的蓝牙开发</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>长文警告 &amp; 待更新警告</p>
+</blockquote>
+<h3 id="蓝牙权限问题"><a href="#蓝牙权限问题" class="headerlink" title="蓝牙权限问题"></a>蓝牙权限问题</h3><p>特别注意的是:<br>Android 7.0及以下要使用蓝牙获取蓝牙名字，rssi，major，minor，<br>需要动态获取得到 “通过网络或者卫星对您的手机定位”这个位置权限，<br>Android8.0需要打开位置信息才可以得到蓝牙major，minor等信息.  </p>
+<p>开发中需要的权限有以下几种：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 蓝牙调用权限 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.BLUETOOTH"</span> /&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 蓝牙开关权限 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.BLUETOOTH_ADMIN"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 以下用于蓝牙做室内定位的,但如果需要获取minor等信息,需要申请 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- GPS定位 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.ACCESS_FINE_LOCATION"</span> /&gt;</span>  </span><br><span class="line"><span class="comment">&lt;!-- 网络定位--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.ACCESS_COARSE_LOCATION"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="运行时申请权限"><a href="#运行时申请权限" class="headerlink" title="运行时申请权限"></a>运行时申请权限</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 检查蓝牙权限</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkBlePermission</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ContextCompat.checkSelfPermission(<span class="keyword">this</span>,</span><br><span class="line">            Manifest.permission.ACCESS_COARSE_LOCATION)</span><br><span class="line">            != PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line"> </span><br><span class="line">        ActivityCompat.requestPermissions(<span class="keyword">this</span>,</span><br><span class="line">                <span class="keyword">new</span> String[]&#123;Manifest.permission.ACCESS_COARSE_LOCATION&#125;,</span><br><span class="line">                <span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        Log.i(<span class="string">"tag"</span>,<span class="string">"已申请权限"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRequestPermissionsResult</span><span class="params">(<span class="keyword">int</span> requestCode, @NonNull String[] permissions, @NonNull <span class="keyword">int</span>[] grantResults)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onRequestPermissionsResult(requestCode, permissions, grantResults);</span><br><span class="line">    <span class="keyword">switch</span> (requestCode) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>: &#123;</span><br><span class="line">            <span class="comment">// 如果请求被取消，则结果数组为空。</span></span><br><span class="line">            <span class="keyword">if</span> (grantResults.length &gt; <span class="number">0</span></span><br><span class="line">                    &amp;&amp; grantResults[<span class="number">0</span>] == PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">                Log.i(<span class="string">"tag"</span>,<span class="string">"同意申请"</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                Log.i(<span class="string">"tag"</span>,<span class="string">"拒绝申请"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="打开蓝牙"><a href="#打开蓝牙" class="headerlink" title="打开蓝牙"></a>打开蓝牙</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * api &gt; 18</span></span><br><span class="line"><span class="comment">  * 获取到BluetoothAdapter之后，还需要判断是否支持蓝牙，以及蓝牙是否打开。</span></span><br><span class="line"><span class="comment">  * 如果没打开，需要让用户打开蓝牙：</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">checkBleDevice</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     <span class="comment">//首先获取BluetoothManager</span></span><br><span class="line">     BluetoothManager bluetoothManager =(BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);</span><br><span class="line">     <span class="comment">//获取BluetoothAdapter</span></span><br><span class="line">     <span class="keyword">if</span> (bluetoothManager != <span class="keyword">null</span>) &#123;</span><br><span class="line">         BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();</span><br><span class="line">         <span class="keyword">if</span> (mBluetoothAdapter != <span class="keyword">null</span>) &#123;</span><br><span class="line">             <span class="keyword">if</span> (!mBluetoothAdapter.isEnabled()) &#123;</span><br><span class="line">                 <span class="comment">//调用enable()方法直接打开蓝牙</span></span><br><span class="line">                 <span class="keyword">if</span> (!mBluetoothAdapter.enable())&#123;</span><br><span class="line">                     Log.i(<span class="string">"tag"</span>,<span class="string">"蓝牙打开失败"</span>);</span><br><span class="line">                 &#125;</span><br><span class="line">                 <span class="keyword">else</span>&#123;</span><br><span class="line">                     Log.i(<span class="string">"tag"</span>,<span class="string">"蓝牙已打开"</span>);</span><br><span class="line">                 &#125;</span><br><span class="line">             &#125;</span><br><span class="line">         &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">             Log.i(<span class="string">"tag"</span>,<span class="string">"同意申请"</span>);</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="蓝牙的相关类库"><a href="#蓝牙的相关类库" class="headerlink" title="蓝牙的相关类库"></a>蓝牙的相关类库</h3><h3 id="蓝牙能做什么"><a href="#蓝牙能做什么" class="headerlink" title="蓝牙能做什么"></a>蓝牙能做什么</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wenbolee.github.io/2018/11/08/Android中的蓝牙开发/" data-id="cjo7hi68l0000r0uvh5i3vfpp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ble/">ble</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bluetooth/">bluetooth</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="android-RecyclerView滑动到指定位置" class="article article-type-android" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/08/RecyclerView滑动到指定位置/" class="article-date">
+  <time datetime="2018-11-07T17:39:07.000Z" itemprop="datePublished">2018-11-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/08/RecyclerView滑动到指定位置/">RecyclerView滑动到指定位置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>有个项目，需要定位recyclerView到某个item。<br>一般用 mRecycleview.smoothScrollToPosition(0) 滑动到顶部，具有滚动效果。<br>但是如果我们想滚动到任意指定位置,那么smoothScrollToPosition()<br>就不能保证所指定item位于屏幕顶部，以下参照网上的一些帖子做一下收藏整合： </p>
+<h3 id="第一种"><a href="#第一种" class="headerlink" title="第一种"></a>第一种</h3><blockquote>
+<p>能实现指定位置位于屏幕顶部，但是不具有平滑滚动视觉效果  </p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (position != -<span class="number">1</span>) &#123;</span><br><span class="line">    mRecycleview.scrollToPosition(position);</span><br><span class="line">    LinearLayoutManager mLayoutManager = (LinearLayoutManager) mRecycleview.getLayoutManager();</span><br><span class="line">    mLayoutManager.scrollToPositionWithOffset(position, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第二种"><a href="#第二种" class="headerlink" title="第二种"></a>第二种</h3><blockquote>
+<p>能实现指定位置位于屏幕顶部，具有平滑滚动视觉效果</p>
+</blockquote>
+<blockquote>
+<ol>
+<li>如果如果跳转位置在第一个可见位置之前，就smoothScrollToPosition()可以直接跳转; </li>
+<li>如果跳转位置在第一个可见项之后，最后一个可见项之前smoothScrollToPosition()不会滚动，调用smoothScrollBy来滑动到指定位置; </li>
+<li>如果要跳转的位置在最后可见项之后，则先调用smoothScrollToPosition()将要跳转的位置滚动到可见位置,在addOnScrollListener()里通过onScrollStateChanged控制,调用smoothMoveToPosition，再次执行判断;</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">boolean</span> mShouldScroll;  <span class="comment">//目标项是否在最后一个可见项之后</span></span><br><span class="line">   </span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> mToPosition;         <span class="comment">//记录目标项位置</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 滑动到指定位置</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">smoothMoveToPosition</span><span class="params">(RecyclerView mRecyclerView, <span class="keyword">final</span> <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 第一个可见位置</span></span><br><span class="line">    <span class="keyword">int</span> firstItem = mRecyclerView.getChildLayoutPosition(mRecyclerView.getChildAt(<span class="number">0</span>));</span><br><span class="line">    <span class="comment">// 最后一个可见位置</span></span><br><span class="line">    <span class="keyword">int</span> lastItem = mRecyclerView.getChildLayoutPosition(mRecyclerView.getChildAt(mRecyclerView.getChildCount() - <span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (position &lt; firstItem) &#123;</span><br><span class="line">        <span class="comment">// 第一种可能:跳转位置在第一个可见位置之前</span></span><br><span class="line">        mRecyclerView.smoothScrollToPosition(position);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (position &lt;= lastItem) &#123;</span><br><span class="line">        <span class="comment">// 第二种可能:跳转位置在第一个可见位置之后</span></span><br><span class="line">        <span class="keyword">int</span> movePosition = position - firstItem;</span><br><span class="line">        <span class="keyword">if</span> (movePosition &gt;= <span class="number">0</span> &amp;&amp; movePosition &lt; mRecyclerView.getChildCount()) &#123;</span><br><span class="line">            <span class="keyword">int</span> top = mRecyclerView.getChildAt(movePosition).getTop();</span><br><span class="line">            mRecyclerView.smoothScrollBy(<span class="number">0</span>, top);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 第三种可能:跳转位置在最后可见项之后</span></span><br><span class="line">        mRecyclerView.smoothScrollToPosition(position);</span><br><span class="line">        mToPosition = position;</span><br><span class="line">        mShouldScroll = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在onCreate中设置滚动监听事件</span></span><br><span class="line">mRecyclerView.addOnScrollListener(<span class="keyword">new</span> RecyclerView.OnScrollListener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onScrollStateChanged</span><span class="params">(RecyclerView recyclerView, <span class="keyword">int</span> newState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onScrollStateChanged(recyclerView, newState);</span><br><span class="line">        <span class="keyword">if</span> (mShouldScroll&amp;&amp; RecyclerView.SCROLL_STATE_IDLE == newState) &#123;</span><br><span class="line">            mShouldScroll = <span class="keyword">false</span>;</span><br><span class="line">            smoothMoveToPosition(irc, mToPosition);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//最后在具体业务中，设置</span></span><br><span class="line"><span class="keyword">if</span> (position != -<span class="number">1</span>) &#123;</span><br><span class="line">    smoothMoveToPosition(irc,position);</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    smoothMoveToPosition(irc,position+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="特殊情况"><a href="#特殊情况" class="headerlink" title="特殊情况"></a>特殊情况</h3><blockquote>
+<p>另一种简单粗暴的方案：项目里有要求滚动到不可视的item，而在recycler是有Holder机制，没有显示不加载，需要先滚动到相对应的holder，等在加载完所有的holder之后，在通过adapter设置item的内容</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//具体业务，</span></span><br><span class="line">recyclerView.scrollToPosition(curPosition);</span><br><span class="line">LinearLayoutManager mLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();</span><br><span class="line">mLayoutManager.scrollToPositionWithOffset(curPosition, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 延迟一秒，原因：在recycler的Holder机制</span></span><br><span class="line"><span class="keyword">new</span> Handler().postDelayed(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        adapter.setLocation(curPosition);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><ol>
+<li><a href="https://blog.csdn.net/shanshan_1117/article/details/78780137" target="_blank" rel="noopener">RecyclerView滑动到指定位置,并指定位置在顶部</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wenbolee.github.io/2018/11/08/RecyclerView滑动到指定位置/" data-id="cjo7hi68v0003r0uvqyotmoye" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RecycleView/">RecycleView</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="weapp-小程序入门" class="article article-type-weapp" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/11/06/小程序入门/" class="article-date">
@@ -106,7 +213,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/06/小程序入门/" data-id="cjo4mea110001m4uvg1daf0is" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/11/06/小程序入门/" data-id="cjo7hi68v0008r0uv0k1nwpgh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/weapp/">weapp</a></li></ul>
@@ -157,7 +264,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/06/Maven安装配置/" data-id="cjo4mea0s0000m4uvqnh7uk94" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/11/06/Maven安装配置/" data-id="cjo7hi68r0001r0uv9ugzt7wv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li></ul>
@@ -191,7 +298,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="一、熟悉一门开发语言：Java-or-Kotlin"><a href="#一、熟悉一门开发语言：Java-or-Kotlin" class="headerlink" title="一、熟悉一门开发语言：Java or Kotlin"></a>一、熟悉一门开发语言：Java or Kotlin</h3><p>java的介绍就不说了，从1995年发布到今天，历经20多年，久经不衰。现在广泛用于开发后端和Android，其他的特性就比较少人用。</p>
+        <h3 id="熟悉一门开发语言：Java-or-Kotlin"><a href="#熟悉一门开发语言：Java-or-Kotlin" class="headerlink" title="熟悉一门开发语言：Java or Kotlin"></a>熟悉一门开发语言：Java or Kotlin</h3><p>java的介绍就不说了，从1995年发布到今天，历经20多年，久经不衰。现在广泛用于开发后端和Android，其他的特性就比较少人用。</p>
 <p>Kotlin则是由IDEA公司推出的一门基于JVM的语言，一直默默无闻，但在2017年的Google I/O上被推荐为Android app的官方推荐语言之后，就火了起来。</p>
 <p>现在越来越多的公司都在启用kotlin，或者用其重写java的代码。</p>
 <p>这里推荐几个学习java和kotlin的网站和系列文章</p>
@@ -200,21 +307,21 @@
 <li><a href="http://www.runoob.com/kotlin/kotlin-tutorial.html" target="_blank" rel="noopener">kotilin-国内-菜鸟教程</a>  </li>
 <li><a href="https://segmentfault.com/a/1190000009307554" target="_blank" rel="noopener">kotlin-掘金-教程收藏集</a>  </li>
 </ul>
-<h3 id="二、开发环境配置"><a href="#二、开发环境配置" class="headerlink" title="二、开发环境配置"></a>二、开发环境配置</h3><ol>
+<h3 id="开发环境配置"><a href="#开发环境配置" class="headerlink" title="开发环境配置"></a>开发环境配置</h3><ol>
 <li>硬件配置：（强烈推荐）8g内存 + i5/7 + 120g固态，最低配置4g内存</li>
 <li>java环境，推荐jdk1.8以上，具体教程不复制了<a href="https://blog.csdn.net/afuturezww/article/details/73124175" target="_blank" rel="noopener">这里给链接</a></li>
 <li>记录一下环境变量<br>在“系统变量”下 -&gt; 新建“java_home” -&gt; 值为安装的java的根目录<br>在“系统变量”下 -&gt; 新建“classpath” -&gt; 值为”.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar”<br>在“系统变量”下 -&gt; 编辑”path”变量 -&gt; 增加”%JAVA_HOME%\bin;”  </li>
 </ol>
-<h3 id="三、下载-amp-安装-Android-studio"><a href="#三、下载-amp-安装-Android-studio" class="headerlink" title="三、下载 &amp; 安装 Android studio"></a>三、下载 &amp; 安装 Android studio</h3><ol>
+<h3 id="下载-amp-安装-Android-studio"><a href="#下载-amp-安装-Android-studio" class="headerlink" title="下载 &amp; 安装 Android studio"></a>下载 &amp; 安装 Android studio</h3><ol>
 <li>下载链接是<a href="http://www.android-studio.org" target="_blank" rel="noopener">www.android-studio.org</a></li>
 <li>安装的话，一路next，注意Studio和SDK的安装目录，最好在C盘根目录，例如C:\android\studio，C:\android\sdk，C:\android\projects。</li>
 <li>打开studio，新建一个项目</li>
 </ol>
-
+<h3 id="学习路线"><a href="#学习路线" class="headerlink" title="学习路线"></a>学习路线</h3><h3 id="组件-amp-生命周期"><a href="#组件-amp-生命周期" class="headerlink" title="组件 &amp; 生命周期"></a>组件 &amp; 生命周期</h3><h3 id="绘制自定义View"><a href="#绘制自定义View" class="headerlink" title="绘制自定义View"></a>绘制自定义View</h3><h3 id="开发模式-MVP-amp-MVVM"><a href="#开发模式-MVP-amp-MVVM" class="headerlink" title="开发模式 MVP &amp; MVVM"></a>开发模式 MVP &amp; MVVM</h3><h3 id="Kotlin特性"><a href="#Kotlin特性" class="headerlink" title="Kotlin特性"></a>Kotlin特性</h3><h3 id="混合网页做表单等大量数据"><a href="#混合网页做表单等大量数据" class="headerlink" title="混合网页做表单等大量数据"></a>混合网页做表单等大量数据</h3><h3 id="熟悉使用Gradle"><a href="#熟悉使用Gradle" class="headerlink" title="熟悉使用Gradle"></a>熟悉使用Gradle</h3><h3 id="底层NDK"><a href="#底层NDK" class="headerlink" title="底层NDK"></a>底层NDK</h3>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/01/first-app/" data-id="cjo4mea190003m4uv1mu4toce" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/11/01/first-app/" data-id="cjo7hi68v0004r0uvggyvme8n" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
@@ -335,7 +442,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/01/markdown-grammar/" data-id="cjo4mea1f0005m4uvf63yy9yd" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/11/01/markdown-grammar/" data-id="cjo7hi69c000nr0uv5sh1x6or" class="article-share-link">Share</a>
       
       
     </footer>
@@ -380,7 +487,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/10/10/hello-world/" data-id="cjo4mea1c0004m4uvu226uf29" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/10/10/hello-world/" data-id="cjo7hi68v0005r0uva76u5a8x" class="article-share-link">Share</a>
       
       
     </footer>
@@ -403,7 +510,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/weapp/">weapp</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/RecycleView/">RecycleView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ble/">ble</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bluetooth/">bluetooth</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/weapp/">weapp</a></li></ul>
     </div>
   </div>
 
@@ -413,7 +520,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/weapp/" style="font-size: 10px;">weapp</a>
+      <a href="/tags/RecycleView/" style="font-size: 10px;">RecycleView</a> <a href="/tags/android/" style="font-size: 20px;">android</a> <a href="/tags/ble/" style="font-size: 10px;">ble</a> <a href="/tags/bluetooth/" style="font-size: 10px;">bluetooth</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/weapp/" style="font-size: 10px;">weapp</a>
     </div>
   </div>
 
@@ -435,6 +542,14 @@
       <ul>
         
           <li>
+            <a href="/2018/11/08/Android中的蓝牙开发/">Android中的蓝牙开发</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/08/RecyclerView滑动到指定位置/">RecyclerView滑动到指定位置</a>
+          </li>
+        
+          <li>
             <a href="/2018/11/06/小程序入门/">小程序入门</a>
           </li>
         
@@ -444,14 +559,6 @@
         
           <li>
             <a href="/2018/11/01/first-app/">原生开发Android环境搭建 first-app</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/01/markdown-grammar/">markdown-grammar</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/10/hello-world/">Hello World</a>
           </li>
         
       </ul>
