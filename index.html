@@ -69,6 +69,110 @@
       <div class="outer">
         <section id="main">
   
+    <article id="archive-Taro小程序文件上传到阿里云" class="article article-type-archive" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/02/Taro小程序文件上传到阿里云/" class="article-date">
+  <time datetime="2019-09-01T17:13:40.000Z" itemprop="datePublished">2019-09-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/02/Taro小程序文件上传到阿里云/">Taro小程序文件上传到阿里云</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h2><ol>
+<li>初步需求：需要选择文件，上传到服务器即可</li>
+<li>第二次需求：上传大文件到阿里云OSS，上传到服务器测试的话，后台出现各种问题，处理不来。于是采用直传阿里云的方式</li>
+</ol>
+<h3 id="选择文件"><a href="#选择文件" class="headerlink" title="选择文件"></a>选择文件</h3><p>小程序论坛里说，17年，鹅厂说会提供一个选择文件的接口，wx.chooseFile()，给到大家，请留意，然后9012年了~<br>这个接口一直没有，但是给了个类似的wx.chooseMessageFile()，于是就用它了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">这里再提供一个思路：</span><br><span class="line">如果想选择本机的文件的话，可以考虑使用WebView，直接打开android或ios的自带文件系统，进行选择</span><br><span class="line">参考链接：稍晚补上</span><br></pre></td></tr></table></figure></p>
+<h3 id="上传文件1-直接上传"><a href="#上传文件1-直接上传" class="headerlink" title="上传文件1 直接上传"></a>上传文件1 直接上传</h3><p>直接使用后台提供的upload接口，交给后台之后，万事大吉<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">Taro.chooseMessageFile(&#123;</span><br><span class="line">  count: <span class="number">1</span>,</span><br><span class="line">  type: <span class="string">'file'</span>,</span><br><span class="line">&#125;).then(<span class="function"><span class="params">res</span> =&gt;</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(res)</span><br><span class="line">  <span class="keyword">if</span>(res.errMsg === <span class="string">"chooseMessageFile:ok"</span>)&#123;</span><br><span class="line">    <span class="keyword">let</span> size = res.tempFiles[<span class="number">0</span>].size</span><br><span class="line">    <span class="keyword">let</span> fileName = res.tempFiles[<span class="number">0</span>].name</span><br><span class="line">    <span class="keyword">if</span>(size &gt; <span class="number">31457280</span>)&#123;</span><br><span class="line">      Taro.showToast(&#123;</span><br><span class="line">        title: <span class="string">'请选择30MB以内的文件'</span>,</span><br><span class="line">        icon: <span class="string">'none'</span></span><br><span class="line">      &#125;)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    Taro.showLoading(&#123;</span><br><span class="line">      title: <span class="string">'上传中..'</span></span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">      fileName: fileName,</span><br><span class="line">      curUpload: <span class="string">'上传中'</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">let</span> path = res.tempFiles[<span class="number">0</span>].path</span><br><span class="line">    <span class="comment">// 马上上传</span></span><br><span class="line">    Taro.uploadFile(&#123;</span><br><span class="line">        url: BASE_URL + <span class="string">"api/v1/upload/upload"</span>,</span><br><span class="line">        filePath: path,</span><br><span class="line">        name: <span class="string">"file"</span>,</span><br><span class="line">        header: &#123;</span><br><span class="line">          token: token</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">        Taro.hideLoading();</span><br><span class="line">        <span class="keyword">if</span>(res.errMsg === <span class="string">'uploadFile:ok'</span>)&#123;</span><br><span class="line">          Taro.showToast(&#123;</span><br><span class="line">            title: <span class="string">'上传成功'</span>,</span><br><span class="line">            icon: <span class="string">'success'</span></span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">          Taro.showToast(&#123;</span><br><span class="line">            title: <span class="string">"未知错误"</span>,</span><br><span class="line">            icon: <span class="string">'none'</span>,</span><br><span class="line">            success: <span class="function"><span class="params">res2</span> =&gt;</span> &#123;</span><br><span class="line">              <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">                fileUrl : <span class="literal">null</span>,</span><br><span class="line">                curUpload: <span class="string">'上传失败'</span></span><br><span class="line">              &#125;)</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;).catch( <span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">        Taro.hideLoading();</span><br><span class="line">        <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">          fileUrl : <span class="literal">null</span>,</span><br><span class="line">          curUpload: <span class="string">'上传失败'</span></span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<h3 id="上传文件2-阿里云直传-其他CDN等也一样"><a href="#上传文件2-阿里云直传-其他CDN等也一样" class="headerlink" title="上传文件2 阿里云直传(其他CDN等也一样)"></a>上传文件2 阿里云直传(其他CDN等也一样)</h3><p>这里先说下步骤</p>
+<ol>
+<li>私有写，只要是私有写，就需要经过签名验证，才能上传</li>
+<li>签名，要根据阿里云的key和Secret进行签名，这个签名一般由服务器做最好，放泄漏</li>
+<li>合法域名，直传需要配置小程序的合法域名，</li>
+<li>链接处理。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wenbolee.github.io/2019/09/02/Taro小程序文件上传到阿里云/" data-id="ck01971ka000a90rkngpgd7wp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/taro/">taro</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小程序/">小程序</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-hexo基础命令" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/02/hexo基础命令/" class="article-date">
+  <time datetime="2019-09-01T16:52:20.000Z" itemprop="datePublished">2019-09-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/02/hexo基础命令/">hexo基础命令</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h3><p>我经常忘记hexo的命名，不得不去官网找教程，就是这个地址：<a href="https://hexo.io/zh-cn/docs/。这里简单记录几个命令和常用的写作技巧" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/。这里简单记录几个命令和常用的写作技巧</a></p>
+<h3 id="命令篇"><a href="#命令篇" class="headerlink" title="命令篇"></a>命令篇</h3><ol>
+<li><code>hexo init [folder文件夹名]</code>，创建一个项目/网站/站点，如果没有文件夹名，Hexo 默认在目前的文件夹建立网站。</li>
+<li><code>hexo new [layout] &lt;title&gt;</code>，新建文章，layout是指分类的意思，常用的有‘page’、‘draft’，指的是分页和草稿，没有就是指post文章，默认发到首页</li>
+<li><code>hexo g</code>，生成网页文件，如果配上d，即<code>hexo g -d</code>，就会生成后，立即部署。</li>
+<li><code>hexo s</code>，启动服务器，预览发布结果</li>
+<li><code>hexo d</code>，部署到服务器。</li>
+<li><code>hexo clean</code>，清除缓存文件 (db.json) 和已生成的静态文件 (public)。尤其是更换主题后，无论如何也不生效，就用这个清理</li>
+<li><code>hexo list</code>，列出网站的资料</li>
+</ol>
+<h3 id="写作篇"><a href="#写作篇" class="headerlink" title="写作篇"></a>写作篇</h3><ol>
+<li>写作的内容格式都遵循markdown的形式，主要是学会md语法即可</li>
+<li>文章存放的路径遵守基本的方法就行</li>
+<li>善用标签分类，文章要打好标签，方便日后整理</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wenbolee.github.io/2019/09/02/hexo基础命令/" data-id="ck01971kj000d90rka7d1gk6f" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo基础/">hexo基础</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="vue-RenRen-Vue前端-开始-and-问题" class="article article-type-vue" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/12/19/RenRen-Vue前端-开始-and-问题/" class="article-date">
@@ -163,7 +267,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/12/19/RenRen-Vue前端-开始-and-问题/" data-id="cjptzjxwl00006ouv4o8lewzl" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/12/19/RenRen-Vue前端-开始-and-问题/" data-id="ck01971k6000890rkrhckg17o" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/renren/">renren</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li></ul>
@@ -204,7 +308,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/12/19/RenRen-Vue前端-mock-api数据切换/" data-id="cjptzjxwp00016ouv7wdemp5k" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/12/19/RenRen-Vue前端-mock-api数据切换/" data-id="ck01971jz000590rk5gh63162" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/renren/">renren</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li></ul>
@@ -258,50 +362,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/12/19/RenRen-Vue前端-动态菜单路由/" data-id="cjptzjxx500036ouv7jxmkyyi" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/12/19/RenRen-Vue前端-动态菜单路由/" data-id="ck01971k4000790rk7085xds2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/renren/">renren</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="life-好自为之？" class="article article-type-life" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/12/15/好自为之？/" class="article-date">
-  <time datetime="2018-12-14T17:06:39.000Z" itemprop="datePublished">2018-12-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/12/15/好自为之？/">好自为之？</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>酸。<br>虽然已经断绝过往，但听到这些还是很不好受。  </p>
-<p>一个女生，缺乏生活经验又花痴，<br>因为考研和另一个不认识的男生去同一考场附近的酒店住一起意味着啥？</p>
-<p>该写周报、养成自律生活了。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/12/15/好自为之？/" data-id="cjptzjxxd000a6ouvgeq82vxw" class="article-share-link">Share</a>
-      
-      
     </footer>
   </div>
   
@@ -361,7 +426,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/30/睡眠方案/" data-id="cjptzjxxj000h6ouvgv8tllwf" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/11/30/睡眠方案/" data-id="ck01971kw000k90rkty06gbcw" class="article-share-link">Share</a>
       
       
     </footer>
@@ -371,9 +436,9 @@
 
 
   
-    <article id="android-Android中的蓝牙开发" class="article article-type-android" itemscope itemprop="blogPost">
+    <article id="android-Android-蓝牙开发" class="article article-type-android" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/11/08/Android中的蓝牙开发/" class="article-date">
+    <a href="/2018/11/08/Android-蓝牙开发/" class="article-date">
   <time datetime="2018-11-07T17:56:17.000Z" itemprop="datePublished">2018-11-08</time>
 </a>
     
@@ -385,7 +450,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/11/08/Android中的蓝牙开发/">Android中的蓝牙开发</a>
+      <a class="article-title" href="/2018/11/08/Android-蓝牙开发/">Android中的蓝牙开发</a>
     </h1>
   
 
@@ -405,7 +470,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/08/Android中的蓝牙开发/" data-id="cjptzjxxa00076ouv474yk7w0" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/11/08/Android-蓝牙开发/" data-id="ck01971j0000090rkzpvpy7v8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ble/">ble</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bluetooth/">bluetooth</a></li></ul>
@@ -466,7 +531,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/08/RecyclerView滑动到指定位置/" data-id="cjptzjxx400026ouvez6kyt3b" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/11/08/RecyclerView滑动到指定位置/" data-id="ck01971jw000490rk8cfgxjs0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RecycleView/">RecycleView</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
@@ -515,7 +580,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/06/小程序入门/" data-id="cjptzjxx900066ouvsomg50e0" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/11/06/小程序入门/" data-id="ck01971ks000i90rkgep814p5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/weapp/">weapp</a></li></ul>
@@ -566,67 +631,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/06/Maven安装配置/" data-id="cjptzjxxc00096ouvwivawgxx" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/11/06/Maven安装配置/" data-id="ck01971jq000390rkelssjp2q" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="android-first-app" class="article article-type-android" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/11/01/first-app/" class="article-date">
-  <time datetime="2018-10-31T17:00:00.000Z" itemprop="datePublished">2018-11-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/11/01/first-app/">原生开发Android环境搭建 first-app</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="熟悉一门开发语言：Java-or-Kotlin"><a href="#熟悉一门开发语言：Java-or-Kotlin" class="headerlink" title="熟悉一门开发语言：Java or Kotlin"></a>熟悉一门开发语言：Java or Kotlin</h3><p>java的介绍就不说了，从1995年发布到今天，历经20多年，久经不衰。现在广泛用于开发后端和Android，其他的特性就比较少人用。</p>
-<p>Kotlin则是由IDEA公司推出的一门基于JVM的语言，一直默默无闻，但在2017年的Google I/O上被推荐为Android app的官方推荐语言之后，就火了起来。</p>
-<p>现在越来越多的公司都在启用kotlin，或者用其重写java的代码。</p>
-<p>这里推荐几个学习java和kotlin的网站和系列文章</p>
-<ul>
-<li><a href="http://www.runoob.com/java/java-tutorial.html" target="_blank" rel="noopener">java-国内-菜鸟教程</a>  </li>
-<li><a href="http://www.runoob.com/kotlin/kotlin-tutorial.html" target="_blank" rel="noopener">kotilin-国内-菜鸟教程</a>  </li>
-<li><a href="https://segmentfault.com/a/1190000009307554" target="_blank" rel="noopener">kotlin-掘金-教程收藏集</a>  </li>
-</ul>
-<h3 id="开发环境配置"><a href="#开发环境配置" class="headerlink" title="开发环境配置"></a>开发环境配置</h3><ol>
-<li>硬件配置：（强烈推荐）8g内存 + i5/7 + 120g固态，最低配置4g内存</li>
-<li>java环境，推荐jdk1.8以上，具体教程不复制了<a href="https://blog.csdn.net/afuturezww/article/details/73124175" target="_blank" rel="noopener">这里给链接</a></li>
-<li>记录一下环境变量<br>在“系统变量”下 -&gt; 新建“java_home” -&gt; 值为安装的java的根目录<br>在“系统变量”下 -&gt; 新建“classpath” -&gt; 值为”.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar”<br>在“系统变量”下 -&gt; 编辑”path”变量 -&gt; 增加”%JAVA_HOME%\bin;”  </li>
-</ol>
-<h3 id="下载-amp-安装-Android-studio"><a href="#下载-amp-安装-Android-studio" class="headerlink" title="下载 &amp; 安装 Android studio"></a>下载 &amp; 安装 Android studio</h3><ol>
-<li>下载链接是<a href="http://www.android-studio.org" target="_blank" rel="noopener">www.android-studio.org</a></li>
-<li>安装的话，一路next，注意Studio和SDK的安装目录，最好在C盘根目录，例如C:\android\studio，C:\android\sdk，C:\android\projects。</li>
-<li>打开studio，新建一个项目</li>
-</ol>
-<h3 id="学习路线"><a href="#学习路线" class="headerlink" title="学习路线"></a>学习路线</h3><h3 id="组件-amp-生命周期"><a href="#组件-amp-生命周期" class="headerlink" title="组件 &amp; 生命周期"></a>组件 &amp; 生命周期</h3><h3 id="绘制自定义View"><a href="#绘制自定义View" class="headerlink" title="绘制自定义View"></a>绘制自定义View</h3><h3 id="开发模式-MVP-amp-MVVM"><a href="#开发模式-MVP-amp-MVVM" class="headerlink" title="开发模式 MVP &amp; MVVM"></a>开发模式 MVP &amp; MVVM</h3><h3 id="Kotlin特性"><a href="#Kotlin特性" class="headerlink" title="Kotlin特性"></a>Kotlin特性</h3><h3 id="混合网页做表单等大量数据"><a href="#混合网页做表单等大量数据" class="headerlink" title="混合网页做表单等大量数据"></a>混合网页做表单等大量数据</h3><h3 id="熟悉使用Gradle"><a href="#熟悉使用Gradle" class="headerlink" title="熟悉使用Gradle"></a>熟悉使用Gradle</h3><h3 id="底层NDK"><a href="#底层NDK" class="headerlink" title="底层NDK"></a>底层NDK</h3>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/01/first-app/" data-id="cjptzjxx800056ouvi7mg048h" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
 
     </footer>
   </div>
@@ -653,7 +661,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/RecycleView/">RecycleView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ble/">ble</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bluetooth/">bluetooth</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/renren/">renren</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/weapp/">weapp</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/RecycleView/">RecycleView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ble/">ble</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bluetooth/">bluetooth</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo基础/">hexo基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/renren/">renren</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/taro/">taro</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/weapp/">weapp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小程序/">小程序</a></li></ul>
     </div>
   </div>
 
@@ -663,7 +671,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/RecycleView/" style="font-size: 10px;">RecycleView</a> <a href="/tags/android/" style="font-size: 20px;">android</a> <a href="/tags/ble/" style="font-size: 10px;">ble</a> <a href="/tags/bluetooth/" style="font-size: 10px;">bluetooth</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/renren/" style="font-size: 20px;">renren</a> <a href="/tags/vue/" style="font-size: 20px;">vue</a> <a href="/tags/weapp/" style="font-size: 10px;">weapp</a>
+      <a href="/tags/RecycleView/" style="font-size: 10px;">RecycleView</a> <a href="/tags/android/" style="font-size: 20px;">android</a> <a href="/tags/ble/" style="font-size: 10px;">ble</a> <a href="/tags/bluetooth/" style="font-size: 10px;">bluetooth</a> <a href="/tags/hexo基础/" style="font-size: 10px;">hexo基础</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/renren/" style="font-size: 20px;">renren</a> <a href="/tags/taro/" style="font-size: 10px;">taro</a> <a href="/tags/vue/" style="font-size: 20px;">vue</a> <a href="/tags/weapp/" style="font-size: 10px;">weapp</a> <a href="/tags/小程序/" style="font-size: 10px;">小程序</a>
     </div>
   </div>
 
@@ -672,7 +680,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li></ul>
     </div>
   </div>
 
@@ -685,6 +693,14 @@
       <ul>
         
           <li>
+            <a href="/2019/09/02/Taro小程序文件上传到阿里云/">Taro小程序文件上传到阿里云</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/02/hexo基础命令/">hexo基础命令</a>
+          </li>
+        
+          <li>
             <a href="/2018/12/19/RenRen-Vue前端-开始-and-问题/">RenRen-Vue前端-开始 and 问题</a>
           </li>
         
@@ -694,14 +710,6 @@
         
           <li>
             <a href="/2018/12/19/RenRen-Vue前端-动态菜单路由/">RenRen-Vue前端-动态菜单路由</a>
-          </li>
-        
-          <li>
-            <a href="/2018/12/15/好自为之？/">好自为之？</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/30/睡眠方案/">睡眠方案</a>
           </li>
         
       </ul>
@@ -716,7 +724,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2018 wenbo<br>
+      &copy; 2019 wenbo<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
