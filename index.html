@@ -69,6 +69,55 @@
       <div class="outer">
         <section id="main">
   
+    <article id="archive-CSS-实现一般复杂的卡片个人中心绘制" class="article article-type-archive" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/03/CSS-实现一般复杂的卡片个人中心绘制/" class="article-date">
+  <time datetime="2019-09-02T17:37:32.000Z" itemprop="datePublished">2019-09-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/03/CSS-实现一般复杂的卡片个人中心绘制/">[CSS]实现一般复杂的卡片个人中心绘制</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>设计真的是搞事情，来了一张效果全开的个人中心UI。<br>如果把背景切图，就会出现定位错误\图片占空间\运行占内存等诸多情况，所以最好是用CSS的代码进行绘制</p>
+<h3 id="技术路线"><a href="#技术路线" class="headerlink" title="技术路线"></a>技术路线</h3><ol>
+<li>Taro 跨端小程序框架</li>
+<li>Stylus CSS预处理框架</li>
+</ol>
+<p><img src="" alt="设计图"><br><img src="http://ww1.sinaimg.cn/mw690/9d2a7effgy1g6m2xo42uxj20ku112n0k.jpg" width="257" height="453" alt="图片名称" align="center"></p>
+<ol>
+<li>类卡片效果，使用分层叠加</li>
+<li>渐变颜色用动画可以解决</li>
+<li>定位头像等信息</li>
+</ol>
+<h3 id="JS-代码"><a href="#JS-代码" class="headerlink" title="JS 代码"></a>JS 代码</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;View className=<span class="string">'index'</span>&gt;</span><br><span class="line">    &lt;View className=<span class="string">'head'</span>&gt;</span><br><span class="line">    &lt;View className=<span class="string">'row row_v_center'</span>&gt;</span><br><span class="line">        &lt;Image className=<span class="string">'head_image'</span> src=&#123;userInfo.avatarUrl &#125;&gt;&lt;/Image&gt;</span><br><span class="line">        &lt;View className=<span class="string">'column'</span>&gt;</span><br><span class="line">            &lt;View className=<span class="string">'user_name'</span>&gt;&#123;userInfo.nickName&#125;&lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">            &lt;View className='phone'&gt;&#123;phone&#125;&lt;/</span>View&gt;</span><br><span class="line">        &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>View&gt;</span><br><span class="line">    &lt;View className=<span class="string">'decorate_1'</span>&gt;&lt;/View&gt;</span><br><span class="line">    &lt;View className=<span class="string">'decorate_2'</span>&gt;&lt;/View&gt;</span><br><span class="line">&lt;<span class="regexp">/View&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="CSS代码"><a href="#CSS代码" class="headerlink" title="CSS代码"></a>CSS代码</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* CSS代码，这里使用 stylus 语法 */</span></span><br><span class="line"><span class="selector-class">.head</span></span><br><span class="line">    <span class="selector-tag">display</span> <span class="selector-tag">flex</span></span><br><span class="line">    <span class="selector-tag">align-items</span> <span class="selector-tag">center</span></span><br><span class="line">    <span class="selector-tag">height</span> 360<span class="selector-tag">px</span></span><br><span class="line">    <span class="selector-tag">width</span> 100%</span><br><span class="line">    <span class="selector-tag">background</span><span class="selector-pseudo">:linear-gradient(90deg</span>,<span class="selector-tag">rgba</span>(15,179,250,1),<span class="selector-tag">rgba</span>(153,218,241,1))</span><br><span class="line">    <span class="selector-class">.row</span></span><br><span class="line">        <span class="selector-class">.head_image</span></span><br><span class="line">            <span class="selector-tag">width</span> 144<span class="selector-tag">px</span></span><br><span class="line">            <span class="selector-tag">height</span> 144<span class="selector-tag">px</span></span><br><span class="line">            <span class="selector-tag">border-radius</span> 50%</span><br><span class="line">            <span class="selector-tag">margin-left</span> 36<span class="selector-tag">px</span></span><br><span class="line">            <span class="selector-tag">border</span> 4<span class="selector-tag">px</span> <span class="selector-tag">solid</span> <span class="selector-id">#fff</span></span><br><span class="line">        <span class="selector-class">.column</span></span><br><span class="line">            <span class="selector-tag">justify-content</span> <span class="selector-tag">center</span></span><br><span class="line">            <span class="selector-tag">margin-left</span> 30<span class="selector-tag">px</span></span><br><span class="line">            <span class="selector-class">.user_name</span></span><br><span class="line">                <span class="selector-tag">font-size</span> 32<span class="selector-tag">px</span></span><br><span class="line">                <span class="selector-tag">color</span> <span class="selector-id">#ffffff</span></span><br><span class="line">            <span class="selector-class">.phone</span></span><br><span class="line">                <span class="selector-tag">margin-top</span> 10<span class="selector-tag">px</span></span><br><span class="line">                <span class="selector-tag">font-size</span> 24<span class="selector-tag">px</span></span><br><span class="line">                <span class="selector-tag">color</span> <span class="selector-id">#ffffff</span></span><br><span class="line">        <span class="selector-class">.vip_type</span></span><br><span class="line">            <span class="selector-tag">color</span> <span class="selector-id">#fff</span></span><br><span class="line">            <span class="selector-tag">margin-left</span> 30<span class="selector-tag">px</span></span><br><span class="line">            <span class="selector-tag">background</span>: <span class="selector-tag">linear-gradient</span>(90<span class="selector-tag">deg</span>, <span class="selector-id">#FFC01C</span>, <span class="selector-id">#FF7800</span>)</span><br><span class="line">            <span class="selector-tag">border-radius</span>: 50<span class="selector-tag">px</span></span><br><span class="line">            <span class="selector-tag">font-size</span>: 22<span class="selector-tag">px</span></span><br><span class="line">            <span class="selector-tag">padding</span>: 6<span class="selector-tag">px</span> 24<span class="selector-tag">px</span></span><br><span class="line"><span class="comment">/* 第一个底部 */</span></span><br><span class="line"><span class="selector-class">.decorate_1</span></span><br><span class="line">    <span class="selector-tag">padding-top</span>: 20<span class="selector-tag">px</span></span><br><span class="line">    <span class="selector-tag">margin</span> <span class="selector-tag">-60px</span> 10% 0<span class="selector-tag">px</span> 10%</span><br><span class="line">    <span class="selector-tag">width</span> 80%</span><br><span class="line">    <span class="selector-tag">height</span> 40<span class="selector-tag">px</span></span><br><span class="line">    <span class="selector-tag">border-top-left-radius</span>: 25<span class="selector-tag">px</span></span><br><span class="line">    <span class="selector-tag">border-top-right-radius</span>: 25<span class="selector-tag">px</span></span><br><span class="line">    <span class="selector-tag">opacity</span><span class="selector-pseudo">:0.3</span></span><br><span class="line">    <span class="selector-tag">background-color</span>: <span class="selector-tag">white</span></span><br><span class="line"><span class="comment">/* 第二个底部 */</span></span><br><span class="line"><span class="selector-class">.decorate_2</span></span><br><span class="line">    <span class="selector-tag">margin</span> <span class="selector-tag">-40px</span> 5% 0<span class="selector-tag">px</span> 5%</span><br><span class="line">    <span class="selector-tag">width</span> 90%</span><br><span class="line">    <span class="selector-tag">height</span> 40<span class="selector-tag">px</span></span><br><span class="line">    <span class="selector-tag">border-top-left-radius</span>: 25<span class="selector-tag">px</span></span><br><span class="line">    <span class="selector-tag">border-top-right-radius</span>: 25<span class="selector-tag">px</span></span><br><span class="line">    <span class="selector-tag">opacity</span><span class="selector-pseudo">:0.6</span></span><br><span class="line">    <span class="selector-tag">background-color</span>: <span class="selector-tag">white</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wenbolee.github.io/2019/09/03/CSS-实现一般复杂的卡片个人中心绘制/" data-id="ck05i6ndo0000z4rkkbic184d" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="archive-Taro小程序文件上传到阿里云" class="article article-type-archive" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/09/02/Taro小程序文件上传到阿里云/" class="article-date">
@@ -110,7 +159,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2019/09/02/Taro小程序文件上传到阿里云/" data-id="ck02ogowu000bwsrkl5sd0d2y" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2019/09/02/Taro小程序文件上传到阿里云/" data-id="ck05i6neg0006z4rkdst5ovlm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/taro/">taro</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小程序/">小程序</a></li></ul>
@@ -163,7 +212,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2019/09/02/hexo基础命令/" data-id="ck02ogox0000ewsrkocfdqrsx" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2019/09/02/hexo基础命令/" data-id="ck05i6nfs0016z4rkbet9i9wq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo基础/">hexo基础</a></li></ul>
@@ -269,7 +318,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/12/19/RenRen-Vue前端-开始-and-问题/" data-id="ck02ogown0008wsrk0i64g4qh" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/12/19/RenRen-Vue前端-开始-and-问题/" data-id="ck05i6nev000dz4rksu109itz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/renren/">renren</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li></ul>
@@ -310,7 +359,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/12/19/RenRen-Vue前端-mock-api数据切换/" data-id="ck02ogowi0005wsrkxn1k92an" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/12/19/RenRen-Vue前端-mock-api数据切换/" data-id="ck05i6ned0005z4rksz6jditz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/renren/">renren</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li></ul>
@@ -364,7 +413,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/12/19/RenRen-Vue前端-动态菜单路由/" data-id="ck02ogowq0009wsrkruu1ko4m" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/12/19/RenRen-Vue前端-动态菜单路由/" data-id="ck05i6nez000fz4rk1us9k5wv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/renren/">renren</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li></ul>
@@ -428,7 +477,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/30/睡眠方案/" data-id="ck02ogoxa000jwsrktuqbfvaa" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/11/30/睡眠方案/" data-id="ck05i6nfy0019z4rkr8a8uj4k" class="article-share-link">Share</a>
       
       
     </footer>
@@ -472,7 +521,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/08/Android-蓝牙开发/" data-id="ck02ogow70001wsrk3es85a21" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/11/08/Android-蓝牙开发/" data-id="ck05i6nej0009z4rkzag4t8yd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ble/">ble</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bluetooth/">bluetooth</a></li></ul>
@@ -533,7 +582,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/08/RecyclerView滑动到指定位置/" data-id="ck02ogowg0004wsrk44p7q6cc" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/11/08/RecyclerView滑动到指定位置/" data-id="ck05i6ne80004z4rkg28p02yv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RecycleView/">RecycleView</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
@@ -582,61 +631,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/06/小程序入门/" data-id="ck02ogox7000hwsrkwcq7ma7s" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/11/06/小程序入门/" data-id="ck05i6nfv0017z4rktj6zbjph" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小程序/">小程序</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="java-Maven安装配置" class="article article-type-java" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/11/06/Maven安装配置/" class="article-date">
-  <time datetime="2018-11-05T17:33:18.000Z" itemprop="datePublished">2018-11-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/11/06/Maven安装配置/">Maven安装配置</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>Maven是Apache组织中一个颇为成功的开源项目，主要服务于基于JAVA平台的项目构建，依赖管理和项目信息管理。<br>构建包括了编译，运行单元测试，生成文档， 打包，部署等工作。<br>maven是一个强大的构建工具，从清理，编译，测试到生成报告，再到打包，部署。<br>Maven抽象了完整的构建生命周期模型。<br>maven是跨平台的，Windows， linux， mac上都可以使用同意的命令，为全世界JAVA开发者提供了免费的中央仓库。</p>
-<h3 id="一、下载"><a href="#一、下载" class="headerlink" title="一、下载"></a>一、下载</h3><p>前往apache下载这个maven，下压缩包，解压后设置环境变量就能用了<br><a href="http://maven.apache.org/download.cgi" target="_blank" rel="noopener">下载链接</a></p>
-<h3 id="二、配置环境变量"><a href="#二、配置环境变量" class="headerlink" title="二、配置环境变量"></a>二、配置环境变量</h3><ol>
-<li>新建：MAVEN_HOME</li>
-<li>路径（例如）：C:\tools\marven3.5</li>
-<li>添加到path配置文件中：;%MAVEN_HOME%\bin;</li>
-<li>验证：mvn -version</li>
-</ol>
-<h3 id="三、阿里云镜像"><a href="#三、阿里云镜像" class="headerlink" title="三、阿里云镜像"></a>三、阿里云镜像</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 修改settings.xml 阿里云镜像 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">id</span>&gt;</span>nexus-aliyun<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>*<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">name</span>&gt;</span>Nexus aliyun<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.aliyun.com/nexus/content/groups/public<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="四、参考链接"><a href="#四、参考链接" class="headerlink" title="四、参考链接"></a>四、参考链接</h3><ul>
-<li><a href="https://www.cnblogs.com/lq147760524/p/6906025.html" target="_blank" rel="noopener">Maven下载</a></li>
-<li><a href="https://blog.csdn.net/yonggang7/article/details/79342422" target="_blank" rel="noopener">Maven简介</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/06/Maven安装配置/" data-id="ck02ogowe0003wsrkp09ox518" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li></ul>
 
     </footer>
   </div>
@@ -695,6 +693,10 @@
       <ul>
         
           <li>
+            <a href="/2019/09/03/CSS-实现一般复杂的卡片个人中心绘制/">[CSS]实现一般复杂的卡片个人中心绘制</a>
+          </li>
+        
+          <li>
             <a href="/2019/09/02/Taro小程序文件上传到阿里云/">Taro小程序文件上传到阿里云</a>
           </li>
         
@@ -708,10 +710,6 @@
         
           <li>
             <a href="/2018/12/19/RenRen-Vue前端-mock-api数据切换/">RenRen-Vue前端-mock/api数据切换</a>
-          </li>
-        
-          <li>
-            <a href="/2018/12/19/RenRen-Vue前端-动态菜单路由/">RenRen-Vue前端-动态菜单路由</a>
           </li>
         
       </ul>

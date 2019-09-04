@@ -69,6 +69,57 @@
       <div class="outer">
         <section id="main">
   
+    <article id="java-Maven安装配置" class="article article-type-java" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/06/Maven安装配置/" class="article-date">
+  <time datetime="2018-11-05T17:33:18.000Z" itemprop="datePublished">2018-11-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/06/Maven安装配置/">Maven安装配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>Maven是Apache组织中一个颇为成功的开源项目，主要服务于基于JAVA平台的项目构建，依赖管理和项目信息管理。<br>构建包括了编译，运行单元测试，生成文档， 打包，部署等工作。<br>maven是一个强大的构建工具，从清理，编译，测试到生成报告，再到打包，部署。<br>Maven抽象了完整的构建生命周期模型。<br>maven是跨平台的，Windows， linux， mac上都可以使用同意的命令，为全世界JAVA开发者提供了免费的中央仓库。</p>
+<h3 id="一、下载"><a href="#一、下载" class="headerlink" title="一、下载"></a>一、下载</h3><p>前往apache下载这个maven，下压缩包，解压后设置环境变量就能用了<br><a href="http://maven.apache.org/download.cgi" target="_blank" rel="noopener">下载链接</a></p>
+<h3 id="二、配置环境变量"><a href="#二、配置环境变量" class="headerlink" title="二、配置环境变量"></a>二、配置环境变量</h3><ol>
+<li>新建：MAVEN_HOME</li>
+<li>路径（例如）：C:\tools\marven3.5</li>
+<li>添加到path配置文件中：;%MAVEN_HOME%\bin;</li>
+<li>验证：mvn -version</li>
+</ol>
+<h3 id="三、阿里云镜像"><a href="#三、阿里云镜像" class="headerlink" title="三、阿里云镜像"></a>三、阿里云镜像</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 修改settings.xml 阿里云镜像 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">id</span>&gt;</span>nexus-aliyun<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>*<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">name</span>&gt;</span>Nexus aliyun<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.aliyun.com/nexus/content/groups/public<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="四、参考链接"><a href="#四、参考链接" class="headerlink" title="四、参考链接"></a>四、参考链接</h3><ul>
+<li><a href="https://www.cnblogs.com/lq147760524/p/6906025.html" target="_blank" rel="noopener">Maven下载</a></li>
+<li><a href="https://blog.csdn.net/yonggang7/article/details/79342422" target="_blank" rel="noopener">Maven简介</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wenbolee.github.io/2018/11/06/Maven安装配置/" data-id="ck05i6ne10002z4rkc7su2e8o" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="android-Android环境搭建" class="article article-type-android" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/11/01/Android环境搭建/" class="article-date">
@@ -117,7 +168,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/01/Android环境搭建/" data-id="ck02ogovy0000wsrkafopk7rw" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/11/01/Android环境搭建/" data-id="ck05i6ndx0001z4rk23njktbc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
@@ -238,7 +289,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/11/01/markdown-grammar/" data-id="ck02ogox3000fwsrkbppyhhzw" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/11/01/markdown-grammar/" data-id="ck05i6ner000cz4rk8lcwmm6z" class="article-share-link">Share</a>
       
       
     </footer>
@@ -283,7 +334,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenbolee.github.io/2018/10/10/hello-world/" data-id="ck02ogoww000cwsrkojd0trs7" class="article-share-link">Share</a>
+      <a data-url="https://wenbolee.github.io/2018/10/10/hello-world/" data-id="ck05i6nem000az4rk2l1m459j" class="article-share-link">Share</a>
       
       
     </footer>
@@ -343,6 +394,10 @@
       <ul>
         
           <li>
+            <a href="/2019/09/03/CSS-实现一般复杂的卡片个人中心绘制/">[CSS]实现一般复杂的卡片个人中心绘制</a>
+          </li>
+        
+          <li>
             <a href="/2019/09/02/Taro小程序文件上传到阿里云/">Taro小程序文件上传到阿里云</a>
           </li>
         
@@ -356,10 +411,6 @@
         
           <li>
             <a href="/2018/12/19/RenRen-Vue前端-mock-api数据切换/">RenRen-Vue前端-mock/api数据切换</a>
-          </li>
-        
-          <li>
-            <a href="/2018/12/19/RenRen-Vue前端-动态菜单路由/">RenRen-Vue前端-动态菜单路由</a>
           </li>
         
       </ul>
